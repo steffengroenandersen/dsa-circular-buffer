@@ -1,7 +1,7 @@
 class CircularBuffer {
-  constructor(arraySize) {
-    this.array = new Array(arraySize);
-    this.arrayLength = arraySize - 1;
+  constructor(capacity) {
+    this.array = new Array(capacity);
+    this.size = capacity;
     this.writeIndex = 0;
     this.readIndex = 0;
   }
@@ -10,6 +10,15 @@ class CircularBuffer {
     console.log("add()");
 
     this.array[this.writeIndex] = value;
+
+    console.log("writeIndex: " + this.writeIndex);
+    console.log("getCapacity: " + this.getCapacity());
+
+    if (this.writeIndex === this.getCapacity() - 1) {
+      this.writeIndex = 0;
+      return;
+    }
+
     this.writeIndex++;
   }
 
@@ -17,7 +26,13 @@ class CircularBuffer {
     console.log("remove()");
 
     const response = this.array[this.readIndex];
+
+    if(this.readIndex === this.getCapacity() -1){
+      this.readIndex = 0;
+    }
     this.readIndex++;
+
+
     return response;
   }
 
@@ -45,8 +60,9 @@ class CircularBuffer {
     return this.writeIndex - this.readIndex;
   }
 
-  capacity() {
-    console.log("capacity()");
+  getCapacity() {
+    //console.log("capacity()");
 
+    return this.size;
   }
 }
